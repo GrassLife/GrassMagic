@@ -1,5 +1,5 @@
 name: GrassMagic
 version: ${project.version}
-main: life.grass.grassmaking.GrassMagic
+main: life.grass.grassmagic.GrassMagic
 authors: [GrassLife]
 depend: []
