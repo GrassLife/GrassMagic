@@ -2,4 +2,4 @@ name: GrassMagic
 version: ${project.version}
 main: life.grass.grassmagic.GrassMagic
 authors: [GrassLife]
-depend: []
+depend: [GrassCombat, GrassPlayer, GrassItem]
