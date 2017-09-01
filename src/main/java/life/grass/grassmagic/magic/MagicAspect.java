@@ -14,7 +14,27 @@ public enum MagicAspect {
         World world = location.getWorld();
 
         world.spawnParticle(Particle.FLAME, location, 3, 0.05, 0.05, 0.05, 0);
-    }));
+    })),
+    PLASMA(false, true, 1.2, (location -> {
+        World world = location.getWorld();
+
+        world.spawnParticle(Particle.FLAME, location, 3, 0.05, 0.05, 0.05, 0);
+    })) {
+        @Override
+        public List<LivingEntity> spark(Location location) {
+            List<LivingEntity> entityList = super.spark(location);
+
+            if (Math.random() * 100 < 8) {
+                World world = location.getWorld();
+                Location point = location.clone().add(Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5);
+
+                world.strikeLightningEffect(point);
+                entityList.addAll(MagicAspect.findNearbyLivingEntities(point, 3));
+            }
+
+            return entityList;
+        }
+    };
 
     private boolean canExertAlly, canExertEnemy;
     private double exertableRange;
@@ -29,10 +49,7 @@ public enum MagicAspect {
 
     public List<LivingEntity> spark(Location location) {
         sparkConsumer.accept(location);
-        return location.getWorld().getNearbyEntities(location, exertableRange, exertableRange, exertableRange).stream()
-                .filter(entity -> entity instanceof LivingEntity)
-                .map(entity -> (LivingEntity) entity)
-                .collect(Collectors.toList());
+        return findNearbyLivingEntities(location, exertableRange);
     }
 
     public boolean canExertAlly() {
@@ -41,5 +58,12 @@ public enum MagicAspect {
 
     public boolean canExertEnemy() {
         return canExertEnemy;
+    }
+
+    private static List<LivingEntity> findNearbyLivingEntities(Location location, double range) {
+        return location.getWorld().getNearbyEntities(location, range, range, range).stream()
+                .filter(entity -> entity instanceof LivingEntity)
+                .map(entity -> (LivingEntity) entity)
+                .collect(Collectors.toList());
     }
 }
