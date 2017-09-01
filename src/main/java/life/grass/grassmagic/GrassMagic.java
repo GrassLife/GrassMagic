@@ -1,5 +1,8 @@
 package life.grass.grassmagic;
 
+import life.grass.grassmagic.listener.PlayerInteract;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class GrassMagic extends JavaPlugin {
@@ -9,6 +12,8 @@ public class GrassMagic extends JavaPlugin {
     public void onEnable() {
         super.onEnable();
         instance = this;
+
+        registerEvents();
     }
 
     @Override
@@ -24,5 +29,11 @@ public class GrassMagic extends JavaPlugin {
 
     public static GrassMagic getInstance() {
         return instance;
+    }
+
+    private void registerEvents() {
+        PluginManager pm = Bukkit.getPluginManager();
+
+        pm.registerEvents(new PlayerInteract(), this);
     }
 }

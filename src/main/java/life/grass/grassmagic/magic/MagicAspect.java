@@ -1,5 +1,6 @@
 package life.grass.grassmagic.magic;
 
+import life.grass.grassmagic.util.Finder;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -8,7 +9,6 @@ import org.bukkit.entity.LivingEntity;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public enum MagicAspect {
     FIRE(false, true, 1.2, (location -> {
@@ -30,7 +30,7 @@ public enum MagicAspect {
                 Location point = location.clone().add(Math.random() * 10 - 5, Math.random() * 10 - 5, Math.random() * 10 - 5);
 
                 world.strikeLightningEffect(point);
-                entityList.addAll(MagicAspect.findNearbyLivingEntities(point, 3));
+                entityList.addAll(Finder.findNearbyLivingEntities(point, 3));
             }
 
             return entityList;
@@ -50,7 +50,7 @@ public enum MagicAspect {
 
     public List<LivingEntity> spark(Location location) {
         sparkConsumer.accept(location);
-        return findNearbyLivingEntities(location, exertableRange);
+        return Finder.findNearbyLivingEntities(location, exertableRange);
     }
 
     public boolean canExertAlly() {
@@ -59,12 +59,5 @@ public enum MagicAspect {
 
     public boolean canExertEnemy() {
         return canExertEnemy;
-    }
-
-    private static List<LivingEntity> findNearbyLivingEntities(Location location, double range) {
-        return location.getWorld().getNearbyEntities(location, range, range, range).stream()
-                .filter(entity -> entity instanceof LivingEntity)
-                .map(entity -> (LivingEntity) entity)
-                .collect(Collectors.toList());
     }
 }
