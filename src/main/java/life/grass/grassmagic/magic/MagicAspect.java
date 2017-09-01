@@ -1,6 +1,7 @@
 package life.grass.grassmagic.magic;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
@@ -18,7 +19,7 @@ public enum MagicAspect {
     PLASMA(false, true, 1.2, (location -> {
         World world = location.getWorld();
 
-        world.spawnParticle(Particle.FLAME, location, 3, 0.05, 0.05, 0.05, 0);
+        world.spawnParticle(Particle.ITEM_CRACK, location, 4, 0.1, 0.1, 0.1, 0, Material.GOLD_BLOCK);
     })) {
         @Override
         public List<LivingEntity> spark(Location location) {
