@@ -8,7 +8,7 @@ import org.bukkit.util.Vector;
 import java.util.List;
 
 public class LinearShaper extends MagicShaper {
-    private static final double DISTANCE_PER_TICK = 0.7;
+    private static final double DISTANCE_PER_TICK = 1.2;
     private static final int REACH = 40;
 
     public LinearShaper(Location location, Vector vector) {
@@ -22,9 +22,9 @@ public class LinearShaper extends MagicShaper {
 
     @Override
     public List<LivingEntity> run(MagicAspect aspect) {
-        double x = getVector().getX() * getCount() * DISTANCE_PER_TICK;
-        double y = getVector().getY() * getCount() * DISTANCE_PER_TICK;
-        double z = getVector().getZ() * getCount() * DISTANCE_PER_TICK;
+        double x = getVector().getX() * (double) getCount() * DISTANCE_PER_TICK;
+        double y = getVector().getY() * (double) getCount() * DISTANCE_PER_TICK;
+        double z = getVector().getZ() * (double) getCount() * DISTANCE_PER_TICK;
 
         increaseCount();
         return aspect.spark(getLocation().clone().add(x, y, z));

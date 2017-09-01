@@ -81,7 +81,7 @@ public class Spell implements Runnable {
         switch (aspect) {
             case FIRE:
                 victim.causeDamage(1, caster, DamageType.MAGIC_DAMAGE);
-                if (Math.random() * 100 < 15) entity.setFireTicks(8);
+                entity.setFireTicks(20);
                 break;
             case PLASMA:
                 victim.causeDamage(3, caster, DamageType.MAGIC_DAMAGE);

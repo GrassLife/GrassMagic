@@ -11,12 +11,13 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public enum MagicAspect {
-    FIRE(false, true, 1.2, (location -> {
+    FIRE(false, true, 1.8, (location -> {
         World world = location.getWorld();
 
-        world.spawnParticle(Particle.FLAME, location, 3, 0.05, 0.05, 0.05, 0);
+        world.spawnParticle(Particle.FLAME, location, 4, 0.1, 0.1, 0.1, 0);
+        if (Math.random() * 100 < 15) world.spawnParticle(Particle.LAVA, location, 1, 0, 0, 0, 0);
     })),
-    PLASMA(false, true, 1.2, (location -> {
+    PLASMA(false, true, 1.8, (location -> {
         World world = location.getWorld();
 
         world.spawnParticle(Particle.ITEM_CRACK, location, 4, 0.1, 0.1, 0.1, 0, Material.GOLD_BLOCK);
