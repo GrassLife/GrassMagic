@@ -3,7 +3,7 @@ package life.grass.grassmagic.listener;
 import life.grass.grassmagic.magic.MagicAspect;
 import life.grass.grassmagic.magic.Spell;
 import life.grass.grassmagic.magic.compiling.SimpleCompiler;
-import life.grass.grassmagic.magic.shaping.LinearShaper;
+import life.grass.grassmagic.magic.spellwork.LinearSpellwork;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +20,9 @@ public class PlayerInteract implements Listener {
         Vector vector = location.getDirection();
 
         // debugging TODO: remove
-        new Spell(player, new SimpleCompiler(player.getLocation()), new LinearShaper(player.getEyeLocation(), vector), MagicAspect.FIRE).cast();
+        new Spell(player,
+                new SimpleCompiler(MagicAspect.PLASMA, player.getLocation()),
+                new LinearSpellwork(MagicAspect.PLASMA, player, player.getEyeLocation(), vector))
+                .cast();
     }
 }

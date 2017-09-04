@@ -7,6 +7,8 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public enum MagicAspect {
     FIRE(false, true) {
@@ -19,7 +21,7 @@ public enum MagicAspect {
         }
 
         @Override
-        public void spark(Location location) {
+        public void sparkEffect(Location location) {
             World world = location.getWorld();
 
             world.spawnParticle(Particle.FLAME, location, 2, 0.1, 0.1, 0.1, 0);
@@ -34,11 +36,10 @@ public enum MagicAspect {
         }
 
         @Override
-        public void spark(Location location) {
+        public void sparkEffect(Location location) {
             World world = location.getWorld();
 
-            System.out.println(Particle.ITEM_CRACK.getDataType());
-            world.spawnParticle(Particle.ITEM_CRACK, location, 3, 0.1, 0.1, 0.1, 0, Material.DIAMOND_BLOCK);
+            world.spawnParticle(Particle.ITEM_CRACK, location, 3, 0.1, 0.1, 0.1, 0, new ItemStack(Material.DIAMOND_BLOCK));
         }
     };
 
@@ -51,7 +52,17 @@ public enum MagicAspect {
 
     public abstract void exert(LivingEntity damager, LivingEntity entity);
 
-    public abstract void spark(Location location);
+    public abstract void sparkEffect(Location location);
+
+    public void spark(Location location, LivingEntity damager) {
+        this.sparkEffect(location);
+
+        location.getWorld().getLivingEntities().stream()
+                .filter(entity -> entity.getLocation().distance(location) < 1.3
+                        && !damager.equals(entity)
+                        && (damager instanceof Player == entity instanceof Player ? canExertAlly() : canExertEnemy()))
+                .forEach(entity -> exert(damager, entity));
+    }
 
     public boolean canExertAlly() {
         return canExertAlly;

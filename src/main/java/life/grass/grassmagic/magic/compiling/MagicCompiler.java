@@ -1,29 +1,20 @@
 package life.grass.grassmagic.magic.compiling;
 
-import life.grass.grassmagic.magic.MagicRunnable;
+import life.grass.grassmagic.magic.MagicAspect;
+import life.grass.grassmagic.magic.MagicSequence;
 import org.bukkit.Location;
 
-public abstract class MagicCompiler implements MagicRunnable {
-    private int count;
+public abstract class MagicCompiler extends MagicSequence {
+    private MagicAspect aspect;
     private Location location;
 
-    public MagicCompiler(Location location) {
+    public MagicCompiler(MagicAspect aspect, Location location) {
+        this.aspect = aspect;
         this.location = location;
     }
 
-    protected abstract int getMaxCount();
-
-    @Override
-    public boolean canRun() {
-        return 0 <= getMaxCount() - count;
-    }
-
-    protected int getCount() {
-        return count;
-    }
-
-    protected void increaseCount() {
-        this.count++;
+    protected MagicAspect getAspect() {
+        return aspect;
     }
 
     protected Location getLocation() {

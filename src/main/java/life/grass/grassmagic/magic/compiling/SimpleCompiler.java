@@ -4,27 +4,27 @@ import life.grass.grassmagic.magic.MagicAspect;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
-import org.bukkit.entity.LivingEntity;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class SimpleCompiler extends MagicCompiler {
     private static final double RADIUS = 2.5;
 
-    public SimpleCompiler(Location location) {
-        super(location);
+    public SimpleCompiler(MagicAspect aspect, Location location) {
+        super(aspect, location);
     }
 
     @Override
-    public List<LivingEntity> run(MagicAspect aspect) {
-        int count = getCount();
+    public boolean isCallable() {
+        return getCount() <= 20 * 4;
+    }
 
+    @Override
+    protected void handle() {
         World world = getLocation().getWorld();
 
         Arrays.asList(1, -1).forEach(multiply -> {
-            double radian = Math.toRadians(count * 12 % 360);
+            double radian = Math.toRadians(getCount() * 12 % 360);
             double x = Math.cos(radian * multiply) * RADIUS;
             double z = Math.sin(radian * multiply) * RADIUS;
 
@@ -40,16 +40,7 @@ public class SimpleCompiler extends MagicCompiler {
             double z = Math.sin(radian) * (RADIUS + 2.5);
 
             Location location = getLocation().clone().add(x, 0.3, z);
-
-            aspect.spark(location.clone().add(Math.random() * 0.06 - 0.03, Math.random() * 0.6 - 0.3, Math.random() * 0.06 - 0.03));
+            getAspect().sparkEffect(location.clone().add(Math.random() * 0.06 - 0.03, Math.random() * 0.6 - 0.3, Math.random() * 0.06 - 0.03));
         }
-
-        increaseCount();
-        return Collections.emptyList();
-    }
-
-    @Override
-    protected int getMaxCount() {
-        return 20 * 3 + 10;
     }
 }
