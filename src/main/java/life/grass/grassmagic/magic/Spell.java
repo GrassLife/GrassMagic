@@ -16,7 +16,7 @@ public class Spell implements Runnable {
 
     private LivingEntity caster;
     private MagicCompiler compiler;
-    private MagicSpellwork shaper;
+    private MagicSpellwork spellwork;
 
     private GrassPlayer grassPlayer;
     private boolean byPlayer;
@@ -27,10 +27,10 @@ public class Spell implements Runnable {
         scheduler = instance.getServer().getScheduler();
     }
 
-    public Spell(LivingEntity caster, MagicCompiler compiler, MagicSpellwork shaper) {
+    public Spell(LivingEntity caster, MagicCompiler compiler, MagicSpellwork spellwork) {
         this.caster = caster;
         this.compiler = compiler;
-        this.shaper = shaper;
+        this.spellwork = spellwork;
 
         this.grassPlayer = caster instanceof Player ? GrassPlayer.findOrCreate(((Player) caster)) : null;
         this.byPlayer = grassPlayer != null;
@@ -45,7 +45,7 @@ public class Spell implements Runnable {
         if (!caster.isValid()) this.cancel();
         if (byPlayer) grassPlayer.setCasting(true);
 
-        MagicSequence sequence = Stream.of(compiler, shaper)
+        MagicSequence sequence = Stream.of(compiler, spellwork)
                 .filter(MagicSequence::isCallable)
                 .findFirst().orElse(null);
 
@@ -54,7 +54,7 @@ public class Spell implements Runnable {
             return;
         }
 
-        if (sequence == shaper && byPlayer && grassPlayer.isCasting()) grassPlayer.setCasting(false);
+        if (sequence == spellwork && byPlayer && grassPlayer.isCasting()) grassPlayer.setCasting(false);
 
         sequence.call();
     }
