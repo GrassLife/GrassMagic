@@ -45,6 +45,9 @@ public enum MagicAspect {
         }
     };
 
+    private static final double EXERTABLE_RANGE = 0.5;
+    private static final double HEIGHT_DIVISOR = 4.0;
+
     private boolean canExertAlly, canExertEnemy;
 
     MagicAspect(boolean canExertAlly, boolean canExertEnemy) {
@@ -62,10 +65,22 @@ public enum MagicAspect {
         Arrays.stream(location.getChunk().getEntities())
                 .filter(entity -> entity instanceof LivingEntity)
                 .map(entity -> ((LivingEntity) entity))
-                .filter(entity -> entity.getLocation().clone().add(0, entity.getEyeHeight(), 0).distance(location) < 1.3
-                        && !damager.equals(entity)
-                        && (damager instanceof Player == entity instanceof Player ? canExertAlly() : canExertEnemy())
-                ).forEach(entity -> exert(damager, entity));
+                .filter(entity -> {
+                    if (damager.equals(entity)
+                            || (damager instanceof Player != entity instanceof Player ? canExertAlly() : canExertEnemy()))
+                        return false;
+
+                    Location entityLocation = entity.getLocation().clone();
+                    double height = entity.getEyeHeight();
+                    for (int i = 0; i <= HEIGHT_DIVISOR; i++) {
+                        if (entityLocation.distance(location) < EXERTABLE_RANGE)
+                            return true;
+
+                        entityLocation.add(0, height / HEIGHT_DIVISOR, 0);
+                    }
+
+                    return false;
+                }).forEach(entity -> exert(damager, entity));
     }
 
     public boolean canExertAlly() {
