@@ -10,6 +10,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+
 public enum MagicAspect {
     FIRE(false, true) {
         @Override
@@ -57,11 +59,13 @@ public enum MagicAspect {
     public void spark(Location location, LivingEntity damager) {
         this.sparkEffect(location);
 
-        location.getWorld().getLivingEntities().stream()
-                .filter(entity -> entity.getLocation().distance(location) < 1.3
+        Arrays.stream(location.getChunk().getEntities())
+                .filter(entity -> entity instanceof LivingEntity)
+                .map(entity -> ((LivingEntity) entity))
+                .filter(entity -> entity.getLocation().clone().add(0, entity.getEyeHeight(), 0).distance(location) < 1.3
                         && !damager.equals(entity)
-                        && (damager instanceof Player == entity instanceof Player ? canExertAlly() : canExertEnemy()))
-                .forEach(entity -> exert(damager, entity));
+                        && (damager instanceof Player == entity instanceof Player ? canExertAlly() : canExertEnemy())
+                ).forEach(entity -> exert(damager, entity));
     }
 
     public boolean canExertAlly() {
