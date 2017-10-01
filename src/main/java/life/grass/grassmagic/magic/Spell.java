@@ -1,8 +1,9 @@
 package life.grass.grassmagic.magic;
 
 import life.grass.grassmagic.GrassMagic;
-import life.grass.grassmagic.magic.compiling.MagicCompiler;
-import life.grass.grassmagic.magic.spellwork.MagicSpellwork;
+import life.grass.grassmagic.magic.sequence.compiler.MagicCompiler;
+import life.grass.grassmagic.magic.sequence.spellwork.MagicSpellwork;
+import life.grass.grassmagic.magic.sequence.MagicSequence;
 import life.grass.grassplayer.GrassPlayer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;

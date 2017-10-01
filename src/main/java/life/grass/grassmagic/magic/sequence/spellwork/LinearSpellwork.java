@@ -1,4 +1,4 @@
-package life.grass.grassmagic.magic.spellwork;
+package life.grass.grassmagic.magic.sequence.spellwork;
 
 import life.grass.grassmagic.magic.MagicAspect;
 import org.bukkit.Location;
@@ -6,7 +6,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
 public class LinearSpellwork extends MagicSpellwork {
-    private static final double DISTANCE_PER_TICK = 1.2;
+    private static final double DISTANCE_PER_TICK = 1.4;
     private static final int REACH = 40;
 
     public LinearSpellwork(MagicAspect aspect, LivingEntity caster, Location location, Vector vector) {
@@ -24,6 +24,6 @@ public class LinearSpellwork extends MagicSpellwork {
         double y = getVector().getY() * (double) getCount() * DISTANCE_PER_TICK;
         double z = getVector().getZ() * (double) getCount() * DISTANCE_PER_TICK;
 
-        getAspect().spark(getLocation().clone().add(x, y, z), getCaster());
+        getAspect().exertWithSpark(getLocation().clone().add(x, y, z), getCaster());
     }
 }

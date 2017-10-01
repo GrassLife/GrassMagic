@@ -1,7 +1,7 @@
-package life.grass.grassmagic.magic.spellwork;
+package life.grass.grassmagic.magic.sequence.spellwork;
 
 import life.grass.grassmagic.magic.MagicAspect;
-import life.grass.grassmagic.magic.MagicSequence;
+import life.grass.grassmagic.magic.sequence.MagicSequence;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;

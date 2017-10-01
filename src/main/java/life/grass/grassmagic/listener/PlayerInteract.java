@@ -2,8 +2,8 @@ package life.grass.grassmagic.listener;
 
 import life.grass.grassmagic.magic.MagicAspect;
 import life.grass.grassmagic.magic.Spell;
-import life.grass.grassmagic.magic.compiling.SimpleCompiler;
-import life.grass.grassmagic.magic.spellwork.LinearSpellwork;
+import life.grass.grassmagic.magic.sequence.compiler.SimpleCompiler;
+import life.grass.grassmagic.magic.sequence.spellwork.GrenadeSpellwork;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,8 +21,9 @@ public class PlayerInteract implements Listener {
 
         // debugging TODO: remove
         new Spell(player,
-                new SimpleCompiler(MagicAspect.PLASMA, player.getLocation()),
-                new LinearSpellwork(MagicAspect.PLASMA, player, player.getEyeLocation(), vector))
+                new SimpleCompiler(MagicAspect.FIRE, player.getLocation()),
+                new GrenadeSpellwork(MagicAspect.FIRE, player, player.getEyeLocation(), vector))
                 .cast();
+
     }
 }

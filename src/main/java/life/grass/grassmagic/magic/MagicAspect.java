@@ -23,7 +23,7 @@ public enum MagicAspect {
         }
 
         @Override
-        public void sparkEffect(Location location) {
+        public void spark(Location location) {
             World world = location.getWorld();
 
             world.spawnParticle(Particle.FLAME, location, 2, 0.1, 0.1, 0.1, 0);
@@ -38,15 +38,13 @@ public enum MagicAspect {
         }
 
         @Override
-        public void sparkEffect(Location location) {
+        public void spark(Location location) {
             World world = location.getWorld();
 
-            world.spawnParticle(Particle.ITEM_CRACK, location, 3, 0.1, 0.1, 0.1, 0, new ItemStack(Material.DIAMOND_BLOCK));
+            world.spawnParticle(Particle.ITEM_CRACK, location, 2, 0.1, 0.1, 0.1, 0, new ItemStack(Material.DIAMOND_BLOCK));
+            world.spawnParticle(Particle.CRIT_MAGIC, location, 5, 0.3, 0.3, 0.3, 0);
         }
     };
-
-    private static final double EXERTABLE_RANGE = 0.5;
-    private static final double HEIGHT_DIVISOR = 4.0;
 
     private boolean canExertAlly, canExertEnemy;
 
@@ -57,30 +55,16 @@ public enum MagicAspect {
 
     public abstract void exert(LivingEntity damager, LivingEntity entity);
 
-    public abstract void sparkEffect(Location location);
+    public abstract void spark(Location location);
 
-    public void spark(Location location, LivingEntity damager) {
-        this.sparkEffect(location);
+    public void exertWithSpark(Location location, LivingEntity damager) {
+        this.spark(location);
 
-        Arrays.stream(location.getChunk().getEntities())
+        Arrays.stream(location.getWorld().getNearbyEntities(location, 1.5, 1.5, 1.5).toArray())
                 .filter(entity -> entity instanceof LivingEntity)
                 .map(entity -> ((LivingEntity) entity))
-                .filter(entity -> {
-                    if (damager.equals(entity)
-                            || (damager instanceof Player != entity instanceof Player ? canExertAlly() : canExertEnemy()))
-                        return false;
-
-                    Location entityLocation = entity.getLocation().clone();
-                    double height = entity.getEyeHeight();
-                    for (int i = 0; i <= HEIGHT_DIVISOR; i++) {
-                        if (entityLocation.distance(location) < EXERTABLE_RANGE)
-                            return true;
-
-                        entityLocation.add(0, height / HEIGHT_DIVISOR, 0);
-                    }
-
-                    return false;
-                }).forEach(entity -> exert(damager, entity));
+                .filter(entity -> !damager.equals(entity) && (damager instanceof Player == entity instanceof Player ? canExertAlly() : canExertEnemy()))
+                .forEach(entity -> exert(damager, entity));
     }
 
     public boolean canExertAlly() {
@@ -89,5 +73,9 @@ public enum MagicAspect {
 
     public boolean canExertEnemy() {
         return canExertEnemy;
+    }
+
+    public enum Level {
+        NORMAL, POPPING
     }
 }

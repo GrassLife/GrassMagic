@@ -1,16 +1,16 @@
-package life.grass.grassmagic.magic;
+package life.grass.grassmagic.magic.sequence;
 
 public abstract class MagicSequence {
-    private int count = 0;
+    private int count = 1;
 
     public abstract boolean isCallable();
 
     protected abstract void handle();
 
     public final void call() {
-        count++;
-
         if (isCallable()) handle();
+
+        count++;
     }
 
     protected int getCount() {

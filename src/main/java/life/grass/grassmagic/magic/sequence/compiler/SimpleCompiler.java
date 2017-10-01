@@ -1,4 +1,4 @@
-package life.grass.grassmagic.magic.compiling;
+package life.grass.grassmagic.magic.sequence.compiler;
 
 import life.grass.grassmagic.magic.MagicAspect;
 import org.bukkit.Location;
@@ -40,7 +40,7 @@ public class SimpleCompiler extends MagicCompiler {
             double z = Math.sin(radian) * (RADIUS + 2.5);
 
             Location location = getLocation().clone().add(x, 0.3, z);
-            getAspect().sparkEffect(location.clone().add(Math.random() * 0.06 - 0.03, Math.random() * 0.6 - 0.3, Math.random() * 0.06 - 0.03));
+            getAspect().spark(location.clone().add(Math.random() * 0.06 - 0.03, Math.random() * 0.6 - 0.3, Math.random() * 0.06 - 0.03));
         }
     }
 }
